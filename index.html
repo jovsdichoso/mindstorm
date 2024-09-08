@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mindstorming</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .container {
+            margin-top: 50px;
+        }
+        .question-box {
+            margin-bottom: 20px;
+        }
+        #result {
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center">Mindstorming</h1>
+        
+        <!-- Input for Goal/Problem -->
+        <div class="mb-3">
+            <label for="goalInput" class="form-label">Enter your Goal or Problem</label>
+            <input type="text" class="form-control" id="goalInput" placeholder="What do you want to achieve or solve?">
+        </div>
+
+        <!-- Questions Section -->
+        <div id="questionsSection">
+            <h3>Answer the following questions:</h3>
+            <div id="questionList"></div>
+            <button id="addQuestionBtn" class="btn btn-secondary mt-3">Add More Answers</button>
+        </div>
+
+        <!-- Button to submit and pick the best answer -->
+        <button id="selectAnswerBtn" class="btn btn-primary mt-3">Select the Best Answer</button>
+
+        <!-- Display selected answer -->
+        <div id="result" class="alert alert-success d-none"></div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const questionList = document.getElementById('questionList');
+            const selectAnswerBtn = document.getElementById('selectAnswerBtn');
+            const addQuestionBtn = document.getElementById('addQuestionBtn');
+            const resultDiv = document.getElementById('result');
+            let questionCount = 5; // Start with 5 questions
+
+            // Function to create a question input box
+            function createQuestionBox(index) {
+                const questionBox = document.createElement('div');
+                questionBox.classList.add('question-box', 'mb-3');
+
+                const label = document.createElement('label');
+                label.classList.add('form-label');
+                label.innerHTML = `Answer Question ${index}`;
+
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.classList.add('form-control');
+                input.id = `answer${index}`;
+                input.placeholder = `Your answer to question ${index}`;
+
+                questionBox.appendChild(label);
+                questionBox.appendChild(input);
+                return questionBox;
+            }
+
+            // Generate initial 5 question boxes
+            for (let i = 1; i <= 5; i++) {
+                questionList.appendChild(createQuestionBox(i));
+            }
+
+            // Add more question boxes when the button is clicked
+            addQuestionBtn.addEventListener('click', () => {
+                questionCount++;
+                questionList.appendChild(createQuestionBox(questionCount));
+            });
+
+            // Handle selection of the best answer
+            selectAnswerBtn.addEventListener('click', () => {
+                let bestAnswer = '';
+                let bestAnswerId = '';
+
+                // Loop through the answers and let the user pick one (simplified for now)
+                for (let i = 1; i <= questionCount; i++) {
+                    const answer = document.getElementById(`answer${i}`).value;
+                    if (answer !== '') {
+                        bestAnswer = answer; // For now, we just select the last non-empty answer
+                        bestAnswerId = `answer${i}`;
+                    }
+                }
+
+                if (bestAnswer) {
+                    resultDiv.classList.remove('d-none');
+                    resultDiv.innerHTML = `Best Answer: <strong>${bestAnswer}</strong>`;
+                } else {
+                    resultDiv.classList.add('d-none');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
